@@ -1,0 +1,738 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Justin // Systems & Agent Engineer · Portfolio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Atkinson+Hyperlegible:wght@400;700&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="index.css">
+</head>
+
+<body>
+  <canvas id="bg-canvas"></canvas>
+  <div class="scanlines" aria-hidden="true"></div>
+
+  <div class="layout">
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <div class="logo">
+        <div class="logo-pulse"></div>
+        <span>SSFS // SYS-PORTAL</span>
+      </div>
+
+      <div class="operator-profile">
+        <h1 class="operator-name">Justin</h1>
+        <div class="operator-title bionic-target">Systems &amp; Agent Engineer</div>
+
+        <p style="font-size: 12px; color: var(--text-dim); line-height: 1.5; margin: 0 0 20px;" class="bionic-target">
+          Engineering local-first, production-hardened computer systems and cognitive agent architectures.
+        </p>
+
+        <div class="target-badge-container">
+          <span class="badge xai">xAI Candidate</span>
+          <span class="badge spacex">SpaceX Candidate</span>
+        </div>
+      </div>
+
+      <!-- ACCESSIBILITY LAYER DOCK -->
+      <div class="controls-panel" role="region" aria-label="Dyslexia Layer Settings">
+        <h2>Dyslexia Layer</h2>
+
+        <label class="control-row">
+          <span>Font Family</span>
+          <select id="font-select" class="control-input" aria-label="Select Font Family">
+            <option value="mono">JetBrains Mono</option>
+            <option value="atkinson">Atkinson Hyperlegible</option>
+            <option value="opendyslexic">OpenDyslexic</option>
+          </select>
+        </label>
+
+        <label class="control-row">
+          <span>Wide Line Spacing</span>
+          <input type="checkbox" id="wide-line" class="control-input" aria-label="Toggle wide line spacing">
+        </label>
+
+        <label class="control-row">
+          <span>PascalCase Words</span>
+          <input type="checkbox" id="bionic-check" class="control-input" aria-label="Toggle Bionic bold leads" checked>
+        </label>
+
+        <label class="control-row">
+          <span>High Contrast</span>
+          <input type="checkbox" id="high-contrast" class="control-input" aria-label="Toggle high contrast mode">
+        </label>
+      </div>
+    </aside>
+
+    <!-- MAIN WORKSPACE -->
+    <main class="main-workspace">
+
+      <!-- HERO Specimen Grid -->
+      <figure class="hero-specimen">
+        <img src="assets/profile-grid.png" alt="Engineering cipher field showing glyph grid visualizer context">
+        <figcaption class="hero-specimen-cap">
+          <span>SYSTEM SPECIMEN 0x00 // CLASSIFIED FIELD GRAPH</span>
+          <span>JUNE 2026</span>
+        </figcaption>
+      </figure>
+
+      <h1 class="terminal-title bionic-target">Horizon View // Strategic Development Portfolio</h1>
+      <p class="bio-lead bionic-target">
+        A strategic summary of development initiatives, categorized by planning horizon and maturity. Focused on
+        delivering production-hardened local applications and advanced cognitive tooling.
+      </p>
+
+      <!-- ALIGNMENT TO FRONTIER AGENCIES -->
+      <section class="card" aria-labelledby="alignment-title">
+        <h2 class="card-title" id="alignment-title">// SpaceX &amp; xAI Engineering Alignment</h2>
+        <div class="alignment-grid">
+
+          <div class="alignment-column">
+            <h3 class="bionic-target">SpaceX Mission Profile: Systems Engineering</h3>
+            <p class="bionic-target">
+              Developing flight computer interfaces and telemetry software demands strict resource limits, offline
+              resilience, and direct hardware interfacing.
+            </p>
+            <ul>
+              <li class="bionic-target"><strong>Zig Core Competency:</strong> Written in Zig, utilizing zero-allocation
+                patterns and dynamic Win32 interfaces for real-time capturing.</li>
+              <li class="bionic-target"><strong>Sovereign Vault:</strong> Ingesting data locally with military-grade
+                encryption (ChaCha20-Poly1305 + PBKDF2), completely bypassing network dependencies.</li>
+            </ul>
+          </div>
+
+          <div class="alignment-column">
+            <h3 class="bionic-target">xAI Mission Profile: Autonomous Agents</h3>
+            <p class="bionic-target">
+              Deploying frontier architectures (like Colossus) requires orchestrating massive agent pools, parsing
+              directories at scale, and keeping context structures clear.
+            </p>
+            <ul>
+              <li class="bionic-target"><strong>Derivation Orchestration:</strong> Engineering structures for running
+                multi-subagent pipelines, generating RESULT.md logs automatically.</li>
+              <li class="bionic-target"><strong>Scope-Aware Graphing:</strong> Designing Intuitree, a radial visualizer
+                handling 50k+ nodes via focus re-rooting, staging comparisons, and isolated sandboxes.</li>
+            </ul>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- HORIZON Explorer Tabs -->
+      <section class="horizon-deck" aria-label="Project Horizons Explorer">
+        <div class="deck-nav" role="tablist">
+          <button class="deck-tab active" data-horizon="1" role="tab" aria-selected="true"
+            aria-controls="proj-h1">Horizon 1 (Mature)</button>
+          <button class="deck-tab" data-horizon="2" role="tab" aria-selected="false" aria-controls="proj-h2">Horizon 2
+            (Emerging)</button>
+          <button class="deck-tab" data-horizon="3" role="tab" aria-selected="false" aria-controls="proj-h3">Horizon 3
+            (Exploratory)</button>
+        </div>
+
+        <div class="project-grid">
+
+          <!-- HORIZON 1 PROJECTS -->
+          <article class="project-card active" data-horizon="1" id="proj-h1">
+            <div class="project-header">
+              <h3 class="project-title">
+                <span>Sesefus</span>
+                <span class="project-type">CLI Engine</span>
+              </h3>
+              <div class="project-status status-active">
+                <span class="status-dot"></span>
+                <span>Active &amp; Defined</span>
+              </div>
+            </div>
+            <div class="project-body">
+              <p class="bionic-target">
+                The foundational core engine of the personal growth environment. Sesefus handles raw system recording,
+                circadian anchors, Stoic check-ins, and cryptographic database locking.
+              </p>
+              <div class="project-spec">
+                <div class="spec-item">
+                  <div class="spec-label">Language / Tech</div>
+                  <div class="spec-val">Zig (v0.16.0), Win32</div>
+                </div>
+                <div class="spec-item">
+                  <div class="spec-label">Deliverable</div>
+                  <div class="spec-val">CLI binary (`ssfs`)</div>
+                </div>
+                <div class="spec-item">
+                  <div class="spec-label">Encryption</div>
+                  <div class="spec-val">ChaCha20-Poly1305</div>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="project-card active" data-horizon="1">
+            <div class="project-header">
+              <h3 class="project-title">
+                <span>Sesephus</span>
+                <span class="project-type">Consumer App</span>
+              </h3>
+              <div class="project-status status-active">
+                <span class="status-dot"></span>
+                <span>Product Layer</span>
+              </div>
+            </div>
+            <div class="project-body">
+              <p class="bionic-target">
+                The polished App Store application representing the consumer-facing face of the growth ecosystem.
+                Bundles the complete Sesefus CLI engine under the hood, wrapping it in high-performance UI and
+                visualizations.
+              </p>
+              <div class="project-spec">
+                <div class="spec-item">
+                  <div class="spec-label">Frontend Stack</div>
+                  <div class="spec-val">React + Vite, HSL CSS</div>
+                </div>
+                <div class="spec-item">
+                  <div class="spec-label">Bridge Layer</div>
+                  <div class="spec-val">FastAPI sidecar</div>
+                </div>
+                <div class="spec-item">
+                  <div class="spec-label">Audio</div>
+                  <div class="spec-val">Whisper local AI</div>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="project-card active" data-horizon="1">
+            <div class="project-header">
+              <h3 class="project-title">
+                <span>Intuitree</span>
+                <span class="project-type">Standalone Repo</span>
+              </h3>
+              <div class="project-status status-active">
+                <span class="status-dot"></span>
+                <span>Active &amp; Defined</span>
+              </div>
+            </div>
+            <div class="project-body">
+              <p class="bionic-target">
+                A visual, beginner-friendly version control tool designed as an alternative or visual complement to Git.
+                Renders file structures and transaction lanes in a radial, re-rootable web canvas.
+              </p>
+              <div class="project-spec">
+                <div class="spec-item">
+                  <div class="spec-label">Visual Interface</div>
+                  <div class="spec-val">HTML5 Canvas, Spline Edges</div>
+                </div>
+                <div class="spec-item">
+                  <div class="spec-label">Primary Target</div>
+                  <div class="spec-val">Interactive VC Interface</div>
+                </div>
+                <div class="spec-item">
+                  <div class="spec-label">Sandbox Mode</div>
+                  <div class="spec-val">Commit/Omit Gating</div>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <!-- HORIZON 2 PROJECTS -->
+          <article class="project-card" data-horizon="2" id="proj-h2">
+            <div class="project-header">
+              <h3 class="project-title">
+                <span>Advanced Agent Harnessing</span>
+                <span class="project-type">Project Container</span>
+              </h3>
+              <div class="project-status status-scoped">
+                <span class="status-dot"></span>
+                <span>Defined Direction</span>
+              </div>
+            </div>
+            <div class="project-body">
+              <p class="bionic-target">
+                Orchestration container designed to run arrays of autonomous programming subagents. Incorporates
+                disjoint lanes, alignment check curators, and token context economists to optimize developer pipelines.
+              </p>
+              <div class="project-spec">
+                <div class="spec-item">
+                  <div class="spec-label">Orchestration</div>
+                  <div class="spec-val">Python/TS agent runners</div>
+                </div>
+                <div class="spec-item">
+                  <div class="spec-label">Gating Logic</div>
+                  <div class="spec-val">Auto-evaluator scoring</div>
+                </div>
+                <div class="spec-item">
+                  <div class="spec-label">Context Strategy</div>
+                  <div class="spec-val">Incremental .intuitree-index</div>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <!-- HORIZON 3 PROJECTS -->
+          <article class="project-card" data-horizon="3" id="proj-h3">
+            <div class="project-header">
+              <h3 class="project-title">
+                <span>OWNED Remote</span>
+                <span class="project-type">Private Streamer</span>
+              </h3>
+              <div class="project-status status-exploratory">
+                <span class="status-dot"></span>
+                <span>Exploratory Concept</span>
+              </div>
+            </div>
+            <div class="project-body">
+              <p class="bionic-target">
+                Self-owned remote storage server and streaming client. Focuses on full data sovereignty, allowing
+                private storage of data and functioning as an encrypted, personal cloud music server.
+              </p>
+              <div class="project-spec">
+                <div class="spec-item">
+                  <div class="spec-label">Focus Area</div>
+                  <div class="spec-val">Self-sovereignty</div>
+                </div>
+                <div class="spec-item">
+                  <div class="spec-label">Server Tech</div>
+                  <div class="spec-val">Rust, SQLite, HTTP/2</div>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="project-card" data-horizon="3">
+            <div class="project-header">
+              <h3 class="project-title">
+                <span>Saturn Nav</span>
+                <span class="project-type">Mobile GPS</span>
+              </h3>
+              <div class="project-status status-exploratory">
+                <span class="status-dot"></span>
+                <span>Exploratory Concept</span>
+              </div>
+            </div>
+            <div class="project-body">
+              <p class="bionic-target">
+                A specialized voice-first mobile GPS navigation app built specifically for motorcyclists. Emphasizes
+                scenic/twisty routing, low-latency audio inputs, and hands-free glove-friendly interaction modes.
+              </p>
+              <div class="project-spec">
+                <div class="spec-item">
+                  <div class="spec-label">Target Platform</div>
+                  <div class="spec-val">iOS / Android Native</div>
+                </div>
+                <div class="spec-item">
+                  <div class="spec-label">Voice System</div>
+                  <div class="spec-val">Hardware-accelerated AI</div>
+                </div>
+              </div>
+            </div>
+          </article>
+
+        </div>
+      </section>
+
+      <!-- INTERACTIVE TELEMETRY CONSOLE -->
+      <section class="terminal-console" aria-labelledby="console-title">
+        <div class="terminal-bar">
+          <div class="terminal-window-title" id="console-title">
+            <div class="terminal-dot"></div>
+            <span>SSFS Telemetry Console v1.0.3</span>
+          </div>
+          <div class="terminal-buttons">
+            <div class="term-btn red"></div>
+            <div class="term-btn yellow"></div>
+            <div class="term-btn green"></div>
+          </div>
+        </div>
+
+        <div class="terminal-screen" id="term-screen" role="log" aria-live="polite">
+          <div class="term-stdout">[SYSTEM] Booting Sesefus Engine v0.9.1 on Windows environment...</div>
+          <div class="term-stdout">[SYSTEM] Loading vault keys and checking local database index...</div>
+          <div class="term-stdout">[SYSTEM] DB Vault State: SECURED (ChaCha20-Poly1305 encrypted)</div>
+          <div class="term-stdout">[SYSTEM] Local audio capturing interfaces initialized. Ready.</div>
+          <div class="term-stdout">&nbsp;</div>
+          <div class="term-stdout">Type <strong style="color: #fff;">status</strong>, <strong
+              style="color: #fff;">grok</strong>, or <strong style="color: #fff;">help</strong> below to audit systems.
+          </div>
+        </div>
+
+        <div class="terminal-quick-runs">
+          <button class="quick-btn" onclick="runConsoleCmd('status')" aria-label="Run command status">run:
+            status</button>
+          <button class="quick-btn" onclick="runConsoleCmd('grok')" aria-label="Run command grok">run: grok</button>
+          <button class="quick-btn" onclick="runConsoleCmd('help')" aria-label="Run command help">run: help</button>
+          <button class="quick-btn" onclick="runConsoleCmd('clear')" aria-label="Run command clear">run: clear</button>
+        </div>
+
+        <div class="terminal-input-row">
+          <span class="terminal-input-prompt" aria-hidden="true">ssfs&gt;</span>
+          <input type="text" class="terminal-input" id="term-input" autocomplete="off"
+            aria-label="Terminal command prompt input" placeholder="Type a command...">
+        </div>
+      </section>
+
+      <!-- FOOTER -->
+      <footer>
+        <span>Justin // Systems Engineering &amp; AI Agents Portfolio</span>
+        <span><a href="https://github.com/theRensisioure" target="_blank"
+            rel="noopener noreferrer">github.com/theRensisioure</a></span>
+      </footer>
+    </main>
+  </div>
+
+  <script>
+    const KEY = "renisioure-portfolio-read";
+    const body = document.body;
+    const fontSelect = document.getElementById("font-select");
+    const wideLine = document.getElementById("wide-line");
+    const bionicCheck = document.getElementById("bionic-check");
+    const highContrast = document.getElementById("high-contrast");
+
+    // Original Text Backup Storage for PascalCase Casing
+    const bionicMap = new Map();
+    let uniqueIdCounter = 0;
+
+    // --- PROCEDURAL GLYPH BACKGROUND RENDERING ---
+    const bgCanvas = document.getElementById("bg-canvas");
+    const bgCtx = bgCanvas ? bgCanvas.getContext("2d") : null;
+    const glyphs = [];
+    const glyphSize = 80;
+
+    // Seeded Random Generator for deterministic layouts
+    function seededRandom(seed) {
+      const x = Math.sin(seed) * 10000;
+      return x - Math.floor(x);
+    }
+
+    // Coordinates of 6 disparate glyphs from the profile-grid.png source image
+    // Column centers at: 190, 370, 550, 730, 910, 1090, 1270, 1450, 1630, 1810, 1990, 2170
+    // Row centers at: 80, 220, 360, 500, 640, 780, 920, 1060, 1200, 1340
+    // Box dimensions: 80x80px
+    const glyphSources = [
+      { x: 510, y: 320, w: 80, h: 80 },  // Col 2, Row 2 (550 - 40, 360 - 40)
+      { x: 690, y: 460, w: 80, h: 80 },  // Col 3, Row 3 (730 - 40, 500 - 40)
+      { x: 870, y: 600, w: 80, h: 80 },  // Col 4, Row 4 (910 - 40, 640 - 40)
+      { x: 1050, y: 740, w: 80, h: 80 }, // Col 5, Row 5 (1090 - 40, 780 - 40)
+      { x: 1230, y: 880, w: 80, h: 80 }, // Col 6, Row 6 (1270 - 40, 920 - 40)
+      { x: 1410, y: 1020, w: 80, h: 80 } // Col 7, Row 7 (1450 - 40, 1060 - 40)
+    ];
+
+    function initGlyphBackground() {
+      if (!bgCanvas || !bgCtx) return;
+
+      const img = new Image();
+      img.src = "assets/profile-grid.png";
+      img.onload = function () {
+        // Extract each glyph and filter out the background texture
+        glyphSources.forEach(src => {
+          const offCanvas = document.createElement("canvas");
+          offCanvas.width = src.w;
+          offCanvas.height = src.h;
+          const offCtx = offCanvas.getContext("2d");
+
+          // Draw the slice from the source image
+          offCtx.drawImage(img, src.x, src.y, src.w, src.h, 0, 0, src.w, src.h);
+
+          // Apply luminance thresholding to extract only the golden glyph lines
+          const imgData = offCtx.getImageData(0, 0, src.w, src.h);
+          const data = imgData.data;
+
+          for (let i = 0; i < data.length; i += 4) {
+            const r = data[i];
+            const g = data[i + 1];
+            const b = data[i + 2];
+
+            // Calculate brightness
+            const brightness = 0.299 * r + 0.587 * g + 0.114 * b;
+
+            if (brightness < 60) {
+              // Chroma-key dark background to transparent
+              data[i + 3] = 0;
+            } else {
+              // Enhance the glyph lines (make them slightly brighter and clear)
+              const factor = 1.3;
+              data[i] = Math.min(255, r * factor);
+              data[i + 1] = Math.min(255, g * factor);
+              data[i + 2] = Math.min(255, b * factor);
+              data[i + 3] = 255;
+            }
+          }
+          offCtx.putImageData(imgData, 0, 0);
+          glyphs.push(offCanvas);
+        });
+
+        // Initial render and setup event listeners
+        renderGlyphs();
+        window.addEventListener("resize", renderGlyphs);
+
+        // Listen for layout changes (e.g. project tab toggles) that alter document height
+        const observer = new MutationObserver(renderGlyphs);
+        observer.observe(document.body, { childList: true, subtree: true, attributes: true });
+      };
+    }
+
+    function renderGlyphs() {
+      if (glyphs.length === 0 || !bgCanvas || !bgCtx) return;
+
+      const w = document.documentElement.scrollWidth || window.innerWidth;
+      const h = document.documentElement.scrollHeight || window.innerHeight;
+
+      bgCanvas.width = w;
+      bgCanvas.height = h;
+
+      bgCtx.clearRect(0, 0, w, h);
+
+      const padding = 96; // ~1 inch in pixels (96dpi)
+      const cellW = glyphSize + padding; // 176px
+      const cellH = glyphSize + padding; // 176px
+
+      const cols = Math.ceil(w / cellW);
+      const rows = Math.ceil(h / cellH);
+
+      // Render grid deterministically using seeded random positions and rotations
+      for (let r = 0; r < rows; r++) {
+        for (let c = 0; c < cols; c++) {
+          const seed = c * 131 + r * 97;
+
+          // Sparsity check: only draw glyph in ~74% of the cells (85% increase in density from 40%)
+          const visVal = seededRandom(seed);
+          if (visVal > 0.74) continue;
+
+          // Select a random glyph from the extracted collection
+          const glyphIdx = Math.floor(seededRandom(seed + 1) * glyphs.length);
+          const glyphCanvas = glyphs[glyphIdx];
+
+          // Compute slight jitter to break up rigid grid lines
+          const jitterX = (seededRandom(seed + 2) - 0.5) * 45;
+          const jitterY = (seededRandom(seed + 3) - 0.5) * 45;
+
+          const x = c * cellW + cellW / 2 + jitterX;
+          const y = r * cellH + cellH / 2 + jitterY;
+
+          // Deterministic rotation at placement
+          const angle = seededRandom(seed + 4) * Math.PI * 2;
+
+          bgCtx.save();
+          bgCtx.translate(x, y);
+          bgCtx.rotate(angle);
+
+          // Set very subtle opacity (watermark level) so it doesn't distract
+          bgCtx.globalAlpha = 0.085;
+
+          bgCtx.drawImage(glyphCanvas, -glyphSize / 2, -glyphSize / 2, glyphSize, glyphSize);
+          bgCtx.restore();
+        }
+      }
+    }
+
+    // Load OpenDyslexic Font Stylesheet
+    function loadOpenDyslexic() {
+      if (document.getElementById("od-css")) return;
+      const link = document.createElement("link");
+      link.id = "od-css";
+      link.rel = "stylesheet";
+      link.href = "https://cdn.jsdelivr.net/npm/open-dyslexic@1.0.3/webfonts/OpenDyslexic.css";
+      document.head.appendChild(link);
+    }
+
+    // Advanced Dynamic PascalCase Reader Implementation for Dyslexic Readers
+    // Recursively processes text nodes and converts all words to PascalCase (capitalizes first letter of every word)
+    function formatPascalCaseText(node) {
+      if (node.nodeType === Node.TEXT_NODE) {
+        const text = node.textContent;
+        if (text.trim() === "") return;
+
+        // Skip script tag or already formatted content parent checking
+        const parent = node.parentElement;
+        if (parent && (parent.tagName === 'SCRIPT' || parent.tagName === 'STYLE' || parent.classList.contains('pascal-wrap') || parent.closest('.terminal-console') || parent.closest('.deck-nav') || parent.closest('.controls-panel'))) {
+          return;
+        }
+
+        // Get or set a unique identifier for the text node's parent to restore it later
+        if (!parent.dataset.pascalId) {
+          const id = "p-" + (++uniqueIdCounter);
+          parent.dataset.pascalId = id;
+          bionicMap.set(id, parent.innerHTML);
+        }
+
+        // Regex to capitalize first letter of every word
+        const newText = text.replace(/\b([a-zA-Z])/g, char => char.toUpperCase());
+
+        const span = document.createElement('span');
+        span.className = 'pascal-wrap';
+        span.textContent = newText;
+        parent.replaceChild(span, node);
+      } else {
+        // Child elements checking
+        const children = Array.from(node.childNodes);
+        for (const child of children) {
+          formatPascalCaseText(child);
+        }
+      }
+    }
+
+    function removePascalCaseText() {
+      // Revert each element that had PascalCase formatting applied to its original inner HTML
+      document.querySelectorAll('[data-pascal-id]').forEach(el => {
+        const id = el.dataset.pascalId;
+        if (bionicMap.has(id)) {
+          el.innerHTML = bionicMap.get(id);
+          el.removeAttribute('data-pascal-id');
+        }
+      });
+    }
+
+    function applyPascalCase() {
+      if (bionicCheck.checked) {
+        document.querySelectorAll(".bionic-target").forEach((el) => {
+          formatPascalCaseText(el);
+        });
+      } else {
+        removePascalCaseText();
+      }
+    }
+
+    function apply() {
+      body.classList.remove("font-atkinson", "font-opendyslexic", "wide-line", "high-contrast");
+
+      if (fontSelect.value === "atkinson") body.classList.add("font-atkinson");
+      if (fontSelect.value === "opendyslexic") {
+        loadOpenDyslexic();
+        body.classList.add("font-opendyslexic");
+      }
+      if (wideLine.checked) body.classList.add("wide-line");
+      if (highContrast.checked) body.classList.add("high-contrast");
+
+      // Perform PascalCase word capitalization
+      applyPascalCase();
+
+      // Save settings in local storage
+      localStorage.setItem(KEY, JSON.stringify({
+        font: fontSelect.value,
+        wide: wideLine.checked,
+        bionic: bionicCheck.checked,
+        contrast: highContrast.checked
+      }));
+    }
+
+    // Load saved preferences
+    try {
+      const saved = JSON.parse(localStorage.getItem(KEY) || "{}");
+      if (saved.font) fontSelect.value = saved.font;
+      if (saved.wide) wideLine.checked = true;
+      if (saved.bionic === false) bionicCheck.checked = false;
+      if (saved.contrast) highContrast.checked = true;
+    } catch (_) { }
+
+    [fontSelect, wideLine, bionicCheck, highContrast].forEach((el) => el.addEventListener("change", apply));
+
+    // Apply initial settings after loading page content
+    window.addEventListener('DOMContentLoaded', () => {
+      apply();
+      initGlyphBackground();
+    });
+
+    // HORIZON EXPLORER TAB SWITCHING
+    const tabs = document.querySelectorAll('.deck-tab');
+    const cards = document.querySelectorAll('.project-card');
+
+    tabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        // Toggle tabs
+        tabs.forEach(t => {
+          t.classList.remove('active');
+          t.setAttribute('aria-selected', 'false');
+        });
+        tab.classList.add('active');
+        tab.setAttribute('aria-selected', 'true');
+
+        // Toggle project cards
+        const targetHorizon = tab.dataset.horizon;
+        cards.forEach(card => {
+          if (card.dataset.horizon === targetHorizon) {
+            card.classList.add('active');
+          } else {
+            card.classList.remove('active');
+          }
+        });
+      });
+    });
+
+    // INTERACTIVE TERMINAL EMULATOR LOGIC
+    const termScreen = document.getElementById('term-screen');
+    const termInput = document.getElementById('term-input');
+
+    // Run command on input press Enter
+    termInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        const cmd = termInput.value.trim();
+        termInput.value = '';
+        if (cmd) {
+          runConsoleCmd(cmd);
+        }
+      }
+    });
+
+    function printStdout(text, className = 'term-stdout') {
+      const div = document.createElement('div');
+      div.className = className;
+      div.innerHTML = text;
+      termScreen.appendChild(div);
+      // Auto scroll to bottom
+      termScreen.scrollTop = termScreen.scrollHeight;
+    }
+
+    function runConsoleCmd(commandString) {
+      const cmd = commandString.toLowerCase().trim();
+
+      // Print the command prompt prefix
+      printStdout(`ssfs&gt; ${commandString}`, 'term-command');
+
+      if (cmd === 'clear') {
+        termScreen.innerHTML = '';
+        return;
+      }
+
+      if (cmd === 'help') {
+        printStdout('Available commands:');
+        printStdout('  <strong style="color:#00ff87;">status</strong>  - Audits engine processes, vaults, and networks');
+        printStdout('  <strong style="color:#00ff87;">grok</strong>    - Inspects Justin\'s technical fit for SpaceX/xAI');
+        printStdout('  <strong style="color:#00ff87;">help</strong>    - Lists all active console routines');
+        printStdout('  <strong style="color:#00ff87;">clear</strong>   - Wipes terminal screen history');
+        return;
+      }
+
+      if (cmd === 'status') {
+        printStdout('--- SESEFUS DAEMON TELEMETRY AUDIT ---');
+        printStdout('[DAEMON] process: ssfs_engine (PID 7812) - RUNNING');
+        printStdout('[VAULT] location: sesephus_vault.db - LOADED');
+        printStdout('[CRYPT] algorithm: ChaCha20-Poly1305 - ENGAGED');
+        printStdout('[PORTS] http_bridge: port 3000 - LISTENING');
+        printStdout('[PORTS] websocket_telemetry: port 3001 - CONNECTED');
+        printStdout('[SYSTEM] Alarms Priority Queue size: 3 scheduled hooks');
+        printStdout('[SYSTEM] Memory consumption: 4.1MB (zero allocation loops)');
+        printStdout('[STATUS] SYSTEM STABLE. Ready for telemetry stream.');
+        return;
+      }
+
+      if (cmd === 'grok') {
+        printStdout('--- JUSTIN // ENGINEERING ALIGNMENT AUDIT ---');
+        printStdout('TARGET [xAI]: Evaluated alignment - HIGH SIGNAL');
+        printStdout(' - Deep experience building parallel agent execution rigs (disjoint execution).');
+        printStdout(' - Capable of designing custom visual VC scopes (Intuitree) to handle extreme context scaling.');
+        printStdout('TARGET [SpaceX]: Evaluated alignment - HIGH SIGNAL');
+        printStdout(' - Zig developer focus: optimized systems software with zero dependencies.');
+        printStdout(' - Local DB vaulting structures + PBKDF2 encryption: values offline-first reliability.');
+        printStdout('CONCLUSION: Ready to deploy. Command line operations verified.');
+        return;
+      }
+
+      // Command unrecognized
+      printStdout(`ssfs: command unrecognized: '${commandString}'. Type 'help' for options.`, 'term-stdout');
+    }
+  </script>
+</body>
+
+</html>
