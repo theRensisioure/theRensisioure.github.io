@@ -33,6 +33,7 @@
 | **Lens** | [therensisioure.github.io/theRensisioure](https://therensisioure.github.io/theRensisioure/) — **Interactive Portfolio** |
 | **System** | Zig engines · real-time audio threads · SQLite encryption |
 | **Agents** | Multi-subagent parallel lanes · scope-aware re-rooting trees |
+| **Play** | [Snake-Man 0.4.5 — Android debug APK](https://github.com/theRensisioure/theRensisioure.github.io/releases/tag/snake-man-0.4.5) |
 | **Contact** | Issues on this repo only |
 
 </div>
