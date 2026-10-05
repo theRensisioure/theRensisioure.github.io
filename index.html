@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+    <title>SNAKE-MAN: TOROIDAL EDITION</title>
+    <script>
+        // Touch mode: a touch-only device, the Android app (?app=1 / its user agent), or ?pad=1.
+        (() => {
+            const q = new URLSearchParams(location.search);
+            const touchOnly = matchMedia('(pointer: coarse)').matches && !matchMedia('(any-pointer: fine)').matches;
+            const app = q.has('app') || navigator.userAgent.includes('SnakeManApp');
+            if (touchOnly || app || q.has('pad')) document.documentElement.classList.add('touch');
+        })();
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background: #111;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 12px 16px;
+            box-sizing: border-box;
+            color: #0f0;
+            font-family: 'Courier New', monospace;
+        }
+        canvas {
+            border: 6px solid #222;
+            border-radius: 18px;
+            box-shadow: 0 0 0 2px #333, 0 0 30px rgba(0, 255, 0, 0.18), inset 0 0 40px #000;
+            image-rendering: pixelated;
+            background: #000;
+            width: min(600px, 92vw);
+            height: auto;
+            touch-action: none;
+        }
+        .stats {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 6px 36px;
+            font-family: 'Press Start 2P', 'Courier New', monospace;
+            font-size: 16px;
+            text-shadow: 2px 2px 0 #030;
+            margin-bottom: 10px;
+        }
+        #time.low { color: #f33; }
+        .kin {
+            font-size: 14px;
+            color: #6a6;
+            margin-bottom: 8px;
+            min-height: 1em;
+        }
+        .kin .v { color: #0ff; }
+        .kin .a { color: #f0f; }
+        .help {
+            margin-top: 12px;
+            color: #888;
+            text-align: center;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+        .legend {
+            display: grid;
+            grid-template-columns: auto auto auto;
+            gap: 2px 14px;
+            margin: 10px auto 0;
+            text-align: left;
+            font-size: 13px;
+            color: #aaa;
+            width: fit-content;
+        }
+        .legend b { font-weight: normal; }
+        .dot { display: inline-block; width: 10px; height: 10px; border-radius: 5px 5px 2px 2px; margin-right: 6px; }
+        /* Touch pad: a joystick and three buttons, shown only in touch mode (html.touch: phones,
+           the Android app, or ?pad=1). Touch mode never scrolls: the screen shrinks to fit. */
+        .pad { display: none; }
+        html.touch, html.touch body { height: 100%; overflow: hidden; overscroll-behavior: none; }
+        html.touch body {
+            justify-content: flex-start; min-height: 0; padding-top: max(10px, env(safe-area-inset-top));
+            user-select: none; -webkit-user-select: none;
+        }
+        html.touch .stats { font-size: 11px; gap: 4px 16px; margin-bottom: 8px; }
+        html.touch .kin, html.touch .help { display: none; }
+        html.touch canvas {   /* portrait: room for two rows of stats above and the pad below */
+            width: min(600px, 92vw, calc(100vh - 290px));
+            width: min(600px, 92vw, calc(100dvh - 290px));
+        }
+        html.touch .pad {
+            display: flex; align-items: center; justify-content: space-between;
+            width: min(600px, 92vw); margin-top: 18px; touch-action: none;
+        }
+        /* Landscape (the app, a phone in a clip-on controller): stats over the stick on the left,
+           the screen as tall as the phone, the buttons on the right. */
+        @media (orientation: landscape) {
+            html.touch body {
+                display: grid; grid-template-columns: 1fr auto 1fr; grid-template-rows: 1fr 1fr;
+                grid-template-areas: "stats screen btns" "stick screen btns";
+                align-items: center; justify-items: center; column-gap: 16px;
+                padding: max(8px, env(safe-area-inset-top)) max(12px, env(safe-area-inset-right))
+                         max(8px, env(safe-area-inset-bottom)) max(12px, env(safe-area-inset-left));
+            }
+            html.touch .stats { grid-area: stats; flex-direction: column; align-items: flex-start; gap: 8px; margin: 0; }
+            html.touch canvas {
+                grid-area: screen;
+                width: min(600px, calc(100vh - 32px));
+                width: min(600px, calc(100dvh - 32px));
+            }
+            html.touch .pad { display: contents; }
+            html.touch .stick { grid-area: stick; }
+            html.touch .btns { grid-area: btns; }
+        }
+        /* A gamepad is connected: its own stick and buttons replace the on-screen ones. */
+        html.gamepad .stick, html.gamepad .btns { display: none; }
+        @media (orientation: landscape) {
+            html.touch.gamepad body { grid-template-areas: "stats screen ." "stats screen ."; }
+        }
+        .stick {
+            position: relative; width: 150px; height: 150px; border-radius: 50%;
+            border: 3px solid #1c4a1c; box-shadow: inset 0 0 24px #000, 0 0 16px rgba(0,255,0,0.12);
+            background: radial-gradient(circle, #102810 0%, #070f07 70%); touch-action: none;
+        }
+        .stick::before, .stick::after {   /* faint 4-way cross: the snake only turns on the grid */
+            content: ''; position: absolute; left: 50%; top: 50%; background: #1c4a1c;
+        }
+        .stick::before { width: 70%; height: 3px; transform: translate(-50%, -50%); }
+        .stick::after { width: 3px; height: 70%; transform: translate(-50%, -50%); }
+        .knob {
+            position: absolute; left: 50%; top: 50%; width: 62px; height: 62px; margin: -31px 0 0 -31px;
+            border-radius: 50%; z-index: 1; pointer-events: none;
+            background: radial-gradient(circle at 35% 35%, #fff6a0, #ffd700 45%, #9a6a00);
+            box-shadow: 0 3px 0 #4a3000, 0 0 12px rgba(255,215,0,0.35);
+        }
+        .btns { display: flex; flex-direction: column; gap: 10px; }
+        .btns button {
+            width: 86px; height: 50px; border-radius: 14px; background: #0c0c14; touch-action: none;
+            font-family: 'Press Start 2P', 'Courier New', monospace; font-size: 11px; color: #0f0;
+            border: 3px solid #1c4a1c; box-shadow: 0 4px 0 #000;
+        }
+        .btns button:active, .btns button.on { transform: translateY(3px); box-shadow: 0 1px 0 #000; }
+        #btnCoat { color: #b89cff; border-color: #4a3a80; }
+        #btnCoat.cool, #btnDash.cool { color: #555; border-color: #2a2a2a; }
+        #btnDash { color: #c89c62; border-color: #6b4a2b; }
+        #btnPadCfg { height: 34px; font-size: 9px; color: #888; border-color: #333; }
+        #btnSkill { font-size: 9px; border-color: #2a5a6a; }
+        /* ZOMBIES mode (zombies.js): the gun readout and the FIRE button only show there. */
+        .zonly, #btnFire { display: none; }
+        /* DASH (lunge.js), once SPEED tier 5 unlocks it. */
+        .lonly, #btnLunge { display: none; }
+        html.lunge .lonly { display: block; }
+        html.touch.lunge #btnLunge { display: block; color: #ffe066; border-color: #7a6a20; }
+        #btnLunge.cool { color: #555; border-color: #2a2a2a; }
+        html.zombies .zonly { display: block; color: #9f6; }
+        html.touch.zombies #btnFire { display: block; color: #ff5050; border-color: #7a2020; }
+        #btnSwap { height: 34px; font-size: 9px; color: #7fdfff; border-color: #2a5a6a; }
+        #btnSkill.cool { color: #555; border-color: #2a2a2a; }
+        html.touch .btns { gap: 8px; }
+        html.touch .btns button { height: 44px; }
+        html.touch #btnPadCfg, html.touch #btnSwap { height: 30px; }
+        /* A controller is in use (any button pressed): the touch pad steps aside until a touch. */
+        html.padmode .pad { display: none; }
+        .sc-empty { color: #555; font-size: 9px; }
+        .sc-row.me { color: #fff; }
+        .sc-tabs { display: flex; gap: 10px; margin-top: 4px; }
+        .sc-tabs span { font-size: 14px; color: #555; padding: 6px 10px; border: 2px solid #222; border-radius: 8px; cursor: pointer; }
+        .sc-tabs span.sel { color: #FFD700; border-color: #FFD700; text-shadow: 2px 2px 0 #401010; }
+        /* The name screen (names.js). */
+        .nm-boxes { display: flex; gap: 4px; margin: 6px 0; }
+        .nm-boxes span { width: 26px; height: 32px; line-height: 32px; text-align: center; font-size: 16px; color: #FFD700;
+                         border-bottom: 3px solid #1c4a1c; background: #070f07; }
+        .nm-boxes span.sel { border-bottom-color: #FFD700; background: #1a1a06; animation: pmblink 0.6s steps(2) infinite; }
+        .nm-input {
+            width: min(320px, 90%); padding: 10px; box-sizing: border-box; text-align: center; text-transform: uppercase;
+            font-family: 'Press Start 2P', 'Courier New', monospace; font-size: 16px; color: #FFD700;
+            background: #070f07; border: 2px solid #1c4a1c; border-radius: 8px; outline: none;
+        }
+        .nm-input:focus { border-color: #FFD700; }
+        html.padmode .nm-input { display: none; }
+        .nm-list { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; width: min(520px, 100%); }
+        .nm-chip { border: 2px solid #1c4a1c; border-radius: 8px; padding: 6px 8px; font-size: 10px; color: #ccc; cursor: pointer; }
+        .nm-chip i { font-style: normal; color: #6a6; font-size: 8px; }
+        .nm-chip.sel { border-color: #FFD700; color: #fff; }
+        /* The upgrades screen (upgrades.js). */
+        .up-pips { display: flex; gap: 4px; align-items: center; }
+        .up-pips i { display: inline-block; width: 14px; height: 10px; border: 2px solid #1c4a1c; background: #070f07; }
+        .up-sub { width: min(520px, 100%); color: #888; font-size: 8px; margin: -4px 0 4px; padding-left: 10px; box-sizing: border-box; }
+        /* Idle panel (idle.js), IDLE mode only: the AUTO switch, the scales you've banked, and what they buy. */
+        .idle {
+            display: none; flex-wrap: wrap; align-items: center; justify-content: center; gap: 6px 10px;
+            margin-top: 12px; max-width: min(600px, 92vw);
+            font-family: 'Press Start 2P', 'Courier New', monospace; font-size: 10px; color: #0ff;
+        }
+        html.idlemode .idle { display: flex; }
+        .idle button {
+            font-family: inherit; font-size: 9px; padding: 7px 9px; border-radius: 10px; touch-action: none;
+            background: #0c0c14; color: #0ff; border: 2px solid #1a5050; box-shadow: 0 3px 0 #000;
+        }
+        .idle button:active { transform: translateY(2px); box-shadow: 0 1px 0 #000; }
+        #btnAuto { color: #888; border-color: #333; }
+        #btnAuto.on { color: #0ff; border-color: #0aa; box-shadow: 0 3px 0 #000, 0 0 10px rgba(0,255,255,0.25); }
+        .idle .up.broke { color: #466; }
+        .idle .up.maxed { color: #fd0; border-color: #554400; }
+        #away { color: #6f6; }
+        /* the tap meter fills left to right behind its label */
+        .heart {
+            color: #ff99aa; padding: 4px 8px; border: 2px solid #4a1828; border-radius: 8px; text-align: center;
+            background: linear-gradient(90deg, #4a1020 var(--p, 0%), #0c0c14 var(--p, 0%));
+        }
+        .heart.full { color: #fff; border-color: #ff3355; }
+        .ups { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; }
+        .rainbow {
+            background: linear-gradient(90deg, #f33, #fa0, #ff3, #3f6, #3cf, #a6f, #f3c);
+            -webkit-background-clip: text; background-clip: text; color: transparent;
+        }
+        .pm-report { max-height: 30vh; overflow: auto; margin: 4px 0; padding: 6px; background: #000; color: #9f9;
+                     font: 9px/1.3 'Courier New', monospace; white-space: pre-wrap; word-break: break-all; text-align: left; }
+        /* Two screens (dual.js): the top is the game and nothing else; the numbers are on the lower screen. */
+        html.dual, html.dual body { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; background: #000; }
+        html.dual ::-webkit-scrollbar { display: none; }
+        html.dual body { display: block; }
+        html.dual .stats, html.dual .kin, html.dual .pad, html.dual .stick, html.dual .btns, html.dual .padmenu { display: none !important; }
+        html.dual #gameCanvas { position: fixed; inset: 0; margin: auto; width: 100vw; height: auto; max-height: 100vh; aspect-ratio: 1060 / 600; }
+    </style>
+    <link rel="stylesheet" href="snake-man/panels.css">
+</head>
+<body>
+
+    <div class="stats">
+        <div>SCORE: <span id="score">0</span></div>
+        <div><span id="hiTier">HI</span>: <span id="hi">0</span></div>
+        <div>LIVES: <span id="lives">3</span></div>
+        <div id="wallsBox">WALLS: <span id="walls"></span></div>
+        <div>TIME: <span id="time">5:00</span></div>
+        <div>ZONE: <span id="zone">1/4</span></div>
+        <div>COAT: <span id="coat">READY</span></div>
+        <div>DIG: <span id="dash">READY</span></div>
+        <div>LV: <span id="lv">1</span></div>
+        <div>EVOLVED: <span id="evo">0 (0 ever)</span></div>
+        <div>SKILL: <span id="skill">-</span></div>
+        <div class="lonly">DASH: <span id="lunge">READY</span></div>
+        <div class="zonly">GUN: <span id="gun">-</span></div>
+    </div>
+    <div class="kin" id="kin"></div>
+
+    <canvas id="gameCanvas" width="600" height="600"></canvas>
+
+    <div class="pad">
+        <div class="stick" id="stick"><div class="knob" id="knob"></div></div>
+        <div class="btns">
+            <button id="btnDash">DIG</button>
+            <button id="btnLunge">DASH</button>
+            <button id="btnCoat">COAT</button>
+            <button id="btnFire">FIRE</button>
+            <button id="btnSkill">SKILL</button>
+            <button id="btnSwap">SWAP</button>
+            <button id="btnPause">PAUSE</button>
+            <button id="btnPadCfg">PAD</button>
+        </div>
+    </div>
+
+    <div class="idle">
+        <button id="btnAuto">AUTO</button>
+        <div class="scales">SCALES <span id="scales">0</span> <span id="away"></span></div>
+        <div class="heart" id="heartBox">HEART <span id="heart">0/500</span></div>
+        <div class="ups" id="ups"></div>
+    </div>
+
+    <div class="help">
+        MOVE: ARROWS / WASD / SWIPE • <span style="color:#c89c62">SHIFT: DIG</span> UNDER WALLS • <span style="color:#b89cff">ESC: TURNCOAT</span> • SPACE PAUSE • V SOUND • − / = ZOOM • H LEVEL • K CONTROLLER • L SCORES<br>
+        <span style="color:#7fdfff">E: SPECIAL SKILL</span> • Q: SWAP SKILL • U: PLAYER NAME • <span style="color:#3f6">I: UPGRADES</span> • <span style="color:#ffe066">Z: DASH (SPEED 5)</span> • <span style="color:#fff">G: GAME MODE (CLASSIC / VOID / ZOMBIES / IDLE / SEASONAL)</span> • <span style="color:#0ff">IDLE: B AUTOPLAY, TAP FILLS THE HEART</span> • <span style="color:#9f6">ZOMBIES: F OR R2 SHOOT, R NEXT GUN</span> • MISSIONS (TOP LEFT) PAY XP AND SKILLS<br>
+        EAT DOTS, SCORE BEFORE 5:00 • <span style="color:#55f">WALLS</span> COST A LIFE • <span class="rainbow">RAINBOWS</span> MAKE GHOSTS EDIBLE • <span style="color:#f33">CHERRIES</span> x2 SCORE<br>
+        WHEN A RETICLE LOCKS, <span style="color:#ddd">BREAK YOUR RHYTHM</span>
+        <div class="legend">
+            <span><span class="dot" style="background:#FF0000"></span>BLINKY</span><b>x</b><span>where you are</span>
+            <span><span class="dot" style="background:#FFB8FF"></span>PINKY</span><b>ẋ</b><span>your velocity</span>
+            <span><span class="dot" style="background:#00FFFF"></span>INKY</span><b>ẍ</b><span>your curve</span>
+            <span><span class="dot" style="background:#FFB800"></span>CLYDE</span><b>∫x</b><span>your loops</span>
+        </div>
+    </div>
+
+    <!-- The game, one module per file (see snake-man/core.js for the layout). Order matters. -->
+    <script src="snake-man/core.js"></script>
+    <script src="snake-man/state.js"></script>
+    <script src="snake-man/view.js"></script>
+    <script src="snake-man/map.js"></script>
+    <script src="snake-man/kin.js"></script>
+    <script src="snake-man/pellets.js"></script>
+    <script src="snake-man/gfx.js"></script>
+    <script src="snake-man/fx.js"></script>
+    <script src="snake-man/music.js"></script>
+    <script src="snake-man/sfx.js"></script>
+    <script src="snake-man/anim.js"></script>
+    <script src="snake-man/ghosts.js"></script>
+    <script src="snake-man/coat.js"></script>
+    <script src="snake-man/player.js"></script>
+    <script src="snake-man/dash.js"></script>
+    <script src="snake-man/heal.js"></script>
+    <script src="snake-man/skills.js"></script>
+    <script src="snake-man/special.js"></script>
+    <script src="snake-man/profile.js"></script>
+    <script src="snake-man/missions.js"></script>
+    <script src="snake-man/modes.js"></script>
+    <script src="snake-man/voidmode.js"></script>
+    <script src="snake-man/zombies.js"></script>
+    <script src="snake-man/lunge.js"></script>
+    <script src="snake-man/render.js"></script>
+    <script src="snake-man/input.js"></script>
+    <script src="snake-man/pad.js"></script>
+    <script src="snake-man/padmenu.js"></script>
+    <script src="snake-man/scores.js"></script>
+    <script src="snake-man/names.js"></script>
+    <script src="snake-man/upgrades.js"></script>
+    <script src="snake-man/evo.js"></script>
+    <script src="snake-man/campaign.js"></script>
+    <script src="snake-man/snakes.js"></script>
+    <script src="snake-man/idle.js"></script>
+    <script src="snake-man/autopilot.js"></script>
+    <script src="snake-man/runlog.js"></script>
+    <script src="snake-man/game.js"></script>
+    <script src="snake-man/dual.js"></script>
+</body>
+</html>
